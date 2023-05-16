@@ -1,27 +1,73 @@
+html{
+    font-size:62.5%;
+}
 body
 {
-
+    color:white;
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height:100vh;
+    background-color:black
 }
 .grid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    width:900px;
-    height:900px;
+    width:60rem;
+    height:60rem;
     gap:2px;
+    box-shadow: 0 0 100px 0px rgba(255, 255, 255, 0.24);
 }
 .tile{
-    outline:2px solid black;
-    background-size: contain;
-    padding:16px;
+    outline:2px solid white;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding:1.6rem;
+
+
 }
 .result 
 {
-    font-size:64px;
+    padding-top:3.2rem;
+    font-size:6.4rem;
     font-family:sans-serif;
+}
+.restart-btn{
+    font-size:4.8rem;
+}
+.hidden {
+    opacity: 0;
+}
+
+@media (max-width:700px)
+{
+    html{
+        font-size:8px;
+    }
+    .grid{
+        width:55rem;
+        height:55rem;
+    }
+}
+
+@media (max-width:500px)
+{
+    html{
+        font-size:6px;
+    }
+    .grid{
+        width:50rem;
+        height:50rem;
+    }
+}
+@media (max-width:350px)
+{
+
+    .grid{
+        width:40rem;
+        height:40rem;
+    }
 }

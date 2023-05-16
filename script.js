@@ -1,41 +1,43 @@
 class App{
     #board;
-    #turn =0;
     #player ='o';
     #ai = 'x';
     #gameState=true;
     #tiles;
     constructor()
     {
-        this.#tiles = document.querySelectorAll(".tile");
         this.#board = ['','','','','','','','',''];
+
+        this.#tiles = document.querySelectorAll(".tile");
         this.#tiles.forEach((tile,idx) => {
-                console.log(tile)
                 tile.addEventListener("click",()=>{
                     if(this.#gameState==true){
                         this._makeMove(idx);
                     }
                 });
         });
-    }   
+
+        const restartBtn = document.querySelector(".restart-btn");
+        restartBtn.addEventListener('click',this._restartGame.bind(this));
+    }
+    _restartGame()
+    {
+        const result =document.querySelector(".result")
+        result.classList.add("hidden")
+        this.#gameState = true;
+        this.#board = ['','','','','','','','',''];
+        this._updateBoard();
+    }
     _makeMove(idx)
     {
         if(this.#board[idx]!='')return;
-        if(this.#turn==0)
-        {
-            this.#board[idx]='o';
-            this.#turn = 1;
-        }
-        else{
-            const best_move = this._findBestMove();
-            console.log(best_move);
-            this.#board[best_move]='x';
-            this.#turn= 0;
-        }
-        
+       
 
-        
-
+        this.#board[idx]=this.#player;
+            
+        const best_move = this._findBestMove();
+        this.#board[best_move]=this.#ai;
+       
         this._updateBoard();
         const winner = this._checkWinner();
      
@@ -57,7 +59,10 @@ class App{
             }
             else if(this.#board[i] =='o')
             {
-                this.#tiles[i].style.backgroundImage="url('o.png')";
+                this.#tiles[i].style.backgroundImage="url('circle.svg')";
+            }
+            else{
+                this.#tiles[i].style.backgroundImage='none';
             }
         }
     }
@@ -93,17 +98,18 @@ class App{
         }
 
         //checkIfTie
-        let counter=0;
+        let emptySquares=9;
         for(let i=0;i<9;i++)
         {
-            if(this.#board[i]!='')counter++;
+            if(this.#board[i]!='')emptySquares--;
         }
-        if(counter==8&&winner==null)winner = 'tie';
+        if(emptySquares==0&&winner==null)winner = 'tie';
         return winner;
     }
     _gameOver(winner)
     {
         const result = document.querySelector('.result');
+        result.classList.remove("hidden");
         if(winner=='x')
         {
             result.innerHTML = 'X Wins';
@@ -139,15 +145,13 @@ class App{
     }
     _minimax(depth,isMax)
     {
-        
-
         const winner = this._checkWinner();
         if(winner!=null)
         {
             
-            if(winner =='x')return 1;
+            if(winner =='x')return (10-depth);
             else if(winner=='tie')return 0;
-            else return -1;
+            else return -10;
         }
 
         if(isMax)
